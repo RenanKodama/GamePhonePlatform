@@ -2,7 +2,7 @@
 Title: GamePhonePlatform (GPP)
  
 
-    Introdução
+    #Introdução
      Jogo desenvolvido para a disciplina de Desenvolvimento de Jogos (DJ36O-ICO), baseado no estilo jogo de plataforma desenvolvido 
      para SmartPhones.
 
