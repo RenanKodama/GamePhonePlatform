@@ -2,9 +2,7 @@
 
 class BaseState extends Phaser.State {
   
-    initFullScreenButtons() {
-        //this.scale.scaleMode = Phaser.ScaleManager.RESIZE;
-        
+    initFullScreenButtons() {        
         let fullScreenButton = this.input.keyboard.addKey(Phaser.Keyboard.ONE);
         fullScreenButton.onDown.add(this.toggleFullScreen, this)    
     } 
