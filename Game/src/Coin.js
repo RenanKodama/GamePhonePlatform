@@ -12,4 +12,4 @@ class Coin extends Phaser.Sprite {
 
        this.animations.play('Coin',50,true)
     }            
-}
+} 

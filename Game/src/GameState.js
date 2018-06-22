@@ -5,7 +5,7 @@ class GameState extends BaseState {
     create() {
         this.game.physics.startSystem(Phaser.Physics.ARCADE)
         this.game.physics.arcade.gravity.y = config.GRAVITY    
-
+ 
         let backGroundWidth = this.game.cache.getImage('background01').width
         let backGroundHeight = this.game.cache.getImage('background01').height
         this.backGround = this.game.add.tileSprite(0, 0, backGroundWidth, backGroundHeight, 'background01')
@@ -45,8 +45,8 @@ class GameState extends BaseState {
         let vpad = new VirtualGamepad(this.game)
         this.game.add.existing(vpad)
 
-        //let jumpButton = vpad.addActionButton(
-        //this.game.width-100, this.game.height-100, 'vstick_button',() => this.player1.jump())
+        let jumpButton = vpad.addActionButton(
+        this.game.width-100, this.game.height-120, 'vstick_button',() => this.player1.jump())
         
         let dpadButton = vpad.addDPadButton(100, this.game.height - 120, 'vstick_dpad', {
                 leftPressed: () => this.player1.keys.left.isDown = true,
@@ -98,13 +98,13 @@ class GameState extends BaseState {
         } else {
             this.game.scale.startFullScreen(false)
         }
-    }
+    } 
 
     update() {
         this.backGround.tilePosition.x -= 0.5
 
         // colisoes com mapa
-        this.game.physics.arcade.collide(this.player1, this.mapLayer)
+        this.game.physics.arcade.collide(this.player1, this.mapLayer, this.setAllowJump)
 
         //colisao com espinhos
         this.game.physics.arcade.collide(this.player1, this.mapLayer_DamageSpike, this.hitSpikes, null, this)
@@ -117,6 +117,11 @@ class GameState extends BaseState {
         
         this.updateHud()
     }
+
+
+    setAllowJump(sprite, tile){
+        sprite.jumpAllow = true
+    }   
 
     hitCoin(sprite, tile){
         sprite.score += config.SCORE_COIN

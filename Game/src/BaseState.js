@@ -16,7 +16,7 @@ class BaseState extends Phaser.State {
         text.anchor.setTo(0.5, 0.5)
         text.fixedToCamera = true
         return text
-    }
+    } 
 
     toggleFullScreen() {
         this.scale.fullScreenScaleMode = Phaser.ScaleManager.EXACT_FIT;
