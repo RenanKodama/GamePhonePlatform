@@ -9,7 +9,11 @@ class Saw extends Phaser.Sprite {
         
         this.body.isCircle = true
         this.body.allowGravity = false
-        this.body.immovable = true            
+        this.body.immovable = true          
+        
+        this.body.collideWorldBounds = true;
+	    this.body.bounce.setTo(1, 1);
+	    this.body.velocity.x = 200
 
         game.add.tween(this)
             .to ( { alpha: 0.6 }, 500 )

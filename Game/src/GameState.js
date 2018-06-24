@@ -19,9 +19,9 @@ class GameState extends BaseState {
             'personagem01', 0xff0000, null, {
                 left: Phaser.Keyboard.LEFT,
                 right: Phaser.Keyboard.RIGHT,
-                up: Phaser.Keyboard.UP,
-                down: Phaser.Keyboard.DOWN,
-                fire: Phaser.Keyboard.UP
+                andarR: Phaser.Keyboard.S,
+                andarL: Phaser.Keyboard.A,
+                jump: Phaser.Keyboard.UP
             })
         
         this.game.add.existing(this.player1)
@@ -83,10 +83,13 @@ class GameState extends BaseState {
         
         this.obstaclesSaw = this.game.add.group()
         this.obstaclesCoin = this.game.add.group()
+        this.obstaclesBlockUpDown = this.game.add.group()
         this.map.createFromObjects('Object Layer DamageSaw', 215,'damage_saw', 0, true, true, this.obstaclesSaw, Saw)
         this.map.createFromObjects('Object Layer ItemCoin', 216,'Coin', 0, true, true, this.obstaclesCoin, Coin)
+        this.map.createFromObjects('Object Layer BlockUpDown', 217,'blockUpDown', 0,true, true, this.obstaclesBlockUpDown, BlockUpDown)
         
         this.iniciarCoins()
+        
 
         this.mapLayer.resizeWorld()
     }
@@ -103,13 +106,19 @@ class GameState extends BaseState {
     update() {
         this.backGround.tilePosition.x -= 0.5
 
-        // colisoes com mapa
+        //colisoes com mapa
         this.game.physics.arcade.collide(this.player1, this.mapLayer, this.setAllowJump)
+
+        //serra colidindo com o mapa
+        this.game.physics.arcade.collide(this.obstaclesSaw, this.mapLayer)
+
+        //blocksUpDown colidindo com o mapa
+        this.game.physics.arcade.collide(this.obstaclesBlockUpDown, this.mapLayer)
 
         //colisao com espinhos
         this.game.physics.arcade.collide(this.player1, this.mapLayer_DamageSpike, this.hitSpikes, null, this)
 
-        // colisao com serras
+        //colisao com serras
         this.game.physics.arcade.collide(this.player1, this.obstaclesSaw, this.hitSaw, null, this)
         
         //colisao com coins 
