@@ -238,22 +238,22 @@ class GameState extends BaseState {
 
     render() {
         
-        this.obstaclesSaw.forEach(function(obj){ 
-            this.game.debug.body(obj)
-        },this)
+        // this.obstaclesSaw.forEach(function(obj){ 
+        //     this.game.debug.body(obj)
+        // },this)
 
-        this.obstaclesCoin.forEach(function(obj){
-            this.game.debug.body(obj)
-        },this)
+        // this.obstaclesCoin.forEach(function(obj){
+        //     this.game.debug.body(obj)
+        // },this)
 
-        this.obstaclesHealth.forEach(function(obj){
-            this.game.debug.body(obj)
-        },this)
+        // this.obstaclesHealth.forEach(function(obj){
+        //     this.game.debug.body(obj)
+        // },this)
 
-        this.obstaclesPortal.forEach(function(obj){
-            this.game.debug.body(obj)
-        },this)
+        // this.obstaclesPortal.forEach(function(obj){
+        //     this.game.debug.body(obj)
+        // },this)
 
-        this.game.debug.body(this.player1)   
+        // this.game.debug.body(this.player1)   
     }
 }
