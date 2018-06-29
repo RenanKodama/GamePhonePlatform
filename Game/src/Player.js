@@ -33,7 +33,6 @@ class Player extends Phaser.Sprite {
 
         this.frame = 0
         this.score = 0
-        this.jumpAllow = false
         this.bullets = bullets
 
     }        
@@ -61,21 +60,16 @@ class Player extends Phaser.Sprite {
             this.animations.play('stay',0.85)   
         }
 
-        
         if (this.keys.jump.isDown){
-            if(this.jumpAllow){
-                this.body.velocity.y += -config.PLAYER_MAX_JUMP
-            }
-            this.jumpAllow = false
+            this.jump()
         }
 
     }
 
     jump() {
-        if(this.jumpAllow){
+        if(this.body.onFloor()){
             this.body.velocity.y += -config.PLAYER_MAX_JUMP
         }
-        this.jumpAllow = false
     }
      
     update() {

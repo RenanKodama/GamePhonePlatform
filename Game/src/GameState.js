@@ -67,9 +67,29 @@ class GameState extends BaseState {
         })
     }
 
+    iniciarHealth(){
+        this.obstaclesHealth.forEach(function(exp){
+            let anim = exp.animations.add('full', null, 20, true) // null -> array of frames
+            exp.scale.setTo(0.6, 0.6)
+            exp.anchor.setTo(0.5, 0.5)
+            exp.animations.play('full')
+            anim.onComplete.add(() => exp.kill())
+        })
+    }
+
+    iniciarPortal(){
+        this.obstaclesPortal.forEach(function(exp){
+            let anim = exp.animations.add('full', null, 20, true) // null -> array of frames
+            exp.scale.setTo(1.5, 1.5)
+            exp.anchor.setTo(0.5, 0.5)
+            exp.animations.play('full')
+            anim.onComplete.add(() => exp.kill())
+        })
+    }
+
 
     createTileMap() {
-        this.map = this.game.add.tilemap('level1')
+        this.map = this.game.add.tilemap(config.LEVEL)
 
         this.map.addTilesetImage('tiles_spritesheet')
         this.map.addTilesetImage('damage_spike')
@@ -84,12 +104,18 @@ class GameState extends BaseState {
         this.obstaclesSaw = this.game.add.group()
         this.obstaclesCoin = this.game.add.group()
         this.obstaclesBlockUpDown = this.game.add.group()
+        this.obstaclesHealth = this.game.add.group()
+        this.obstaclesPortal = this.game.add.group()
+
         this.map.createFromObjects('Object Layer DamageSaw', 215,'damage_saw', 0, true, true, this.obstaclesSaw, Saw)
         this.map.createFromObjects('Object Layer ItemCoin', 216,'Coin', 0, true, true, this.obstaclesCoin, Coin)
         this.map.createFromObjects('Object Layer BlockUpDown', 217,'blockUpDown', 0,true, true, this.obstaclesBlockUpDown, BlockUpDown)
-        
+        this.map.createFromObjects('Object Layer Health', 218,'health', 0,true, true, this.obstaclesHealth, Health)
+        this.map.createFromObjects('Object Layer Portal', 219,'portal', 0,true, true, this.obstaclesPortal, Portal)
+
         this.iniciarCoins()
-        
+        this.iniciarHealth()
+        this.iniciarPortal()
 
         this.mapLayer.resizeWorld()
     }
@@ -122,15 +148,63 @@ class GameState extends BaseState {
         this.game.physics.arcade.collide(this.player1, this.obstaclesSaw, this.hitSaw, null, this)
         
         //colisao com coins 
-        this.game.physics.arcade.collide(this.player1, this.obstaclesCoin, this.hitCoin, null, this)
+        this.game.physics.arcade.overlap(this.player1, this.obstaclesCoin, this.hitCoin, null, this)
+
+        //colisao com blocksUpDown
+        this.game.physics.arcade.collide(this.player1, this.obstaclesBlockUpDown, this.hitBlockUpDown, null, this)
         
+        //colisao com healths
+        this.game.physics.arcade.overlap(this.player1, this.obstaclesHealth, this.hitHealth, null, this)
+
+        //colisao com o portal
+        this.game.physics.arcade.overlap(this.player1, this.obstaclesPortal, this.hitPortal, null, this)
+
         this.updateHud()
     }
-
 
     setAllowJump(sprite, tile){
         sprite.jumpAllow = true
     }   
+
+    hitPortal(sprite, tile){
+        if (config.LEVEL === "level1"){
+            config.LEVEL = "level2"
+        }
+        else{
+            if (config.LEVEL == "level2"){
+                config.LEVEL = "level3"
+            }
+            else{
+                if (config.LEVEL == "level3"){
+                    config.LEVEL = "level4"
+                }
+                else{
+                    if (config.LEVEL == "level4"){
+                        config.LEVEL = "level1"
+                    }
+                }
+            }
+        }
+        this.game.state.restart()
+    }
+
+    hitHealth(sprite, tile){
+        if(sprite.health < 5){
+            sprite.health += config.ITEM_HEALTH
+        }
+
+        sprite.score += config.SCORE_HEALTH
+        
+        tile.kill()
+    }
+
+    hitBlockUpDown(sprite, block){
+        sprite.damage(1)
+        
+
+        let forceDirection = this.game.physics.arcade.angleBetween(block, sprite)
+        this.game.physics.arcade.velocityFromRotation(forceDirection, 700, sprite.body.velocity)
+    }
 
     hitCoin(sprite, tile){
         sprite.score += config.SCORE_COIN
@@ -138,15 +212,13 @@ class GameState extends BaseState {
     }
 
     hitSpikes(sprite, tile) {
-        sprite.alpha = 0.5
-        tile.alpha = 0
-        // força atualizaçao dos tiles no map
-        this.mapLayer.dirty = true 
+        sprite.damage(10)
     }
 
     hitSaw(player, obstacle) {
         if (player.alive) {
             player.damage(1)
+
             if (!player.alive)
                 this.game.camera.follow(null)
             
@@ -155,7 +227,7 @@ class GameState extends BaseState {
 
             // empurra jogador na direcao oposta a da colisao
             let forceDirection = this.game.physics.arcade.angleBetween(obstacle, player)
-            this.game.physics.arcade.velocityFromRotation(forceDirection, 600, player.body.velocity)
+            this.game.physics.arcade.velocityFromRotation(forceDirection, 700, player.body.velocity)
         }
     }
 
@@ -174,7 +246,14 @@ class GameState extends BaseState {
             this.game.debug.body(obj)
         },this)
 
-        this.game.debug.body(this.player1)
-        //game.debug.body(player2)
+        this.obstaclesHealth.forEach(function(obj){
+            this.game.debug.body(obj)
+        },this)
+
+        this.obstaclesPortal.forEach(function(obj){
+            this.game.debug.body(obj)
+        },this)
+
+        this.game.debug.body(this.player1)   
     }
 }
