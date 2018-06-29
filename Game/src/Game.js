@@ -15,6 +15,7 @@ config.FRICTION = 80
 config.GRAVITY = 500
 config.PLAYER_DRAG = 80
 config.MASS = 200
+config.SAW_VELOCITY = 200
 config.SCORE_COIN = 57
 config.SCORE_HEALTH = 16
 

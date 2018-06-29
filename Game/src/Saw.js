@@ -13,7 +13,7 @@ class Saw extends Phaser.Sprite {
         
         this.body.collideWorldBounds = true;
 	    this.body.bounce.setTo(1, 1);
-	    this.body.velocity.x = 200
+	    this.body.velocity.x = config.SAW_VELOCITY
 
         game.add.tween(this)
             .to ( { alpha: 0.6 }, 500 )

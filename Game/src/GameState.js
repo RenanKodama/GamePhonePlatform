@@ -151,7 +151,7 @@ class GameState extends BaseState {
         this.game.physics.arcade.overlap(this.player1, this.obstaclesCoin, this.hitCoin, null, this)
 
         //colisao com blocksUpDown
-        this.game.physics.arcade.overlap(this.player1, this.obstaclesBlockUpDown, this.hitBlockUpDown, null, this)
+        this.game.physics.arcade.collide(this.player1, this.obstaclesBlockUpDown, this.hitBlockUpDown, null, this)
         
         //colisao com healths
         this.game.physics.arcade.overlap(this.player1, this.obstaclesHealth, this.hitHealth, null, this)
@@ -189,7 +189,7 @@ class GameState extends BaseState {
     }
 
     hitHealth(sprite, tile){
-        if(sprite.health < 5){
+        if(sprite.health < 30){
             sprite.health += config.ITEM_HEALTH
         }
 
