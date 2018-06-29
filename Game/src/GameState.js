@@ -151,7 +151,7 @@ class GameState extends BaseState {
         this.game.physics.arcade.overlap(this.player1, this.obstaclesCoin, this.hitCoin, null, this)
 
         //colisao com blocksUpDown
-        this.game.physics.arcade.collide(this.player1, this.obstaclesBlockUpDown, this.hitBlockUpDown, null, this)
+        this.game.physics.arcade.overlap(this.player1, this.obstaclesBlockUpDown, this.hitBlockUpDown, null, this)
         
         //colisao com healths
         this.game.physics.arcade.overlap(this.player1, this.obstaclesHealth, this.hitHealth, null, this)
@@ -200,10 +200,11 @@ class GameState extends BaseState {
 
     hitBlockUpDown(sprite, block){
         sprite.damage(1)
-        
 
-        let forceDirection = this.game.physics.arcade.angleBetween(block, sprite)
-        this.game.physics.arcade.velocityFromRotation(forceDirection, 700, sprite.body.velocity)
+        this.updateHud()
+
+        //let forceDirection = this.game.physics.arcade.angleBetween(block, sprite)
+        //this.game.physics.arcade.velocityFromRotation(forceDirection, 700, sprite.body.velocity)
     }
 
     hitCoin(sprite, tile){
